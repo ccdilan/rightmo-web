@@ -26,12 +26,12 @@ The documentation's API tester uses a bearer token obtained from its login endpo
 
 ## Features
 
-- Login, logout, expired-session handling, and protected catalog/detail data.
+- Login with password visibility control, logout, expired-session handling, and protected catalog/detail data.
 - Responsive product cards with category, price, rating, and image.
 - Search words in any order, multiple category checkboxes, price/rating filters, sorting, and page-size controls retained in URL parameters. Submit with Apply filters or Enter; criteria changes reset the page. Remove individual applied filters with their chips. Refresh and Back preserve selections.
 - Numbered pagination, first-page recovery after the catalog changes, and layout-shaped loading skeletons for catalog/detail/forms.
-- Product creation from **Add product**, editing from product details, and deletion with a confirmation dialog. Forms cover name, description, category, price, and rating with field-level validation and saving states.
-- Dynamic product details and image upload/replacement, with inline validation, pending/error/success states, and refreshed product data.
+- Product creation from **Add product**, editing from product details, and deletion with a confirmation dialog. Forms cover name, description, category, price, and rating with field-level validation, focused error summaries, description length guidance, and saving states.
+- Dynamic product details and image upload/replacement, with a local preview, file size, clear-selection control, immediate type/size feedback, pending/error/success states, and refreshed product data. Preview URLs are released when replaced or hidden; the server still validates actual file content.
 - Missing-image fallback, empty results, invalid filters, missing products, and retryable service errors.
 - Keyboard-friendly forms, visible focus, skip navigation, and reduced-motion support.
 
@@ -59,10 +59,16 @@ npm start
 npm run test:integration
 ```
 
-Unit tests exercise safe redirects (including new/edit forms), exact origin checking, query serialization, request size boundaries, and product field filtering. The integration test verifies login cookies/token privacy, CSRF rejection, protected forms, create/update/delete through Next.js, field errors and duplicate names, partial updates, large descriptions, invalid uploads, image replacement/deletion, logout, and expired-session mutations using a temporary product. It requires the demo account and creates/deletes its own product without modifying seeded products.
+Unit tests exercise safe redirects (including new/edit forms), exact origin checking, combined filter serialization, individual-filter removal, bounded page navigation, currency formatting, image preflight checks, request size boundaries, and product field filtering. The integration test verifies login cookies/token privacy, CSRF rejection, protected forms, create/update/delete through Next.js, field errors and duplicate names, partial updates, large descriptions, invalid uploads, image replacement/deletion, logout, and expired-session mutations using a temporary product. It requires the demo account and creates/deletes its own product without modifying seeded products.
 
 For a browser acceptance pass: log in, combine a name/category/price filter, change sorting, advance a page, refresh and use Back, create a product, edit its details, upload an image, confirm the updated card in the catalog, cancel a delete dialog, delete the temporary product, and sign out. Repeat at a narrow mobile width and with keyboard navigation. GitHub Actions runs lint, types, unit tests, and the production build on Node 22. Deployment is outside this repository setup.
 
 ## Engineering improvements
 
 See [the engineering plan](ENGINEERING_PLAN.md) for the ordered UI/UX, search, accessibility, and performance work with acceptance criteria. Changes are delivered as separate Conventional Commits.
+
+## Verified improvement pass
+
+On 25 October 2026, the frontend passed lint, TypeScript, 12 unit tests, the Docker-backed integration scenario, and the production build. Browser checks covered multiple categories with rating/sort filters, removing one selection, Back/refresh persistence, mobile layout, keyboard focus from validation errors, password visibility, local image preview/clearing, and unsupported-file rejection. Delete confirmations close when their cached detail page is left.
+
+Currency formatting creates one formatter per catalog render and reuses it across cards. Filters submit explicitly to avoid issuing a request for every keystroke. See the [API performance evidence](https://github.com/ccdilan/rightmo-api/blob/main/docs/performance.md) for the bounded SQL-query budget and the measured ordering-index plan. Shared authentication/data caches, responsive image derivatives, full-text search, production load tests, and deployment are not added by this pass.

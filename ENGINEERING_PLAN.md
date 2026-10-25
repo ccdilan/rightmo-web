@@ -33,3 +33,21 @@ Read commits in delivery order across the API and web repositories. API addition
 - [MySQL ORDER BY optimization](https://dev.mysql.com/doc/refman/8.4/en/order-by-optimization.html): evaluating index-backed ordering with EXPLAIN.
 - [React effect lifecycle](https://react.dev/reference/react/useEffect): releasing browser resources on replacement and unmount.
 - Installed Next.js 16.4.3 documentation is the source for Cache Components and navigation behavior.
+
+## Completed delivery record
+
+All five parts are implemented. Review the following focused commits in order:
+
+| Repository | Commit | Result |
+| --- | --- | --- |
+| API | `a4c7e8d` | Multiple categories, word search, minimum rating, validation, tests, and Scribe contract. |
+| Web | `bd37247` | Catalog filter controls/chips, URL state, pagination, loading skeletons, mobile UX. |
+| Web | `2e0591d` | Login visibility control and accessible product/login error feedback. |
+| Web | `90e4d7e` | Local image preview, clearing, file-size feedback, and early validation. |
+| Web | `3489f56` | Reuse currency formatter across cards. |
+| API | `fcd55fa` | Constant query-count regression test and measured index evidence. |
+| Web | `8fc4907` | Close delete confirmation when navigating away from cached details. |
+
+Final verification: 40 API tests / 376 assertions, 88.8% line coverage, PHPStan and Pint pass; web lint/types, 12 unit tests, integration scenario, and production build pass. Docker services are healthy. Browser review also caught and fixed a delete-dialog state issue during Back/Forward navigation; it has its own follow-up fix commit.
+
+The existing ordering index was retained after measurement; no duplicate index or schema migration was needed. Full-text search and responsive image derivatives remain future work subject to representative measurements, documented in the API performance report. Production deployment and load testing are outside this local verification.
