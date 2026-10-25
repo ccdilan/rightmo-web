@@ -1,6 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { useState, type FormEvent } from "react";
+import { useId, useState, type FormEvent } from "react";
+import { FormError } from "./form-error";
 import { Icon } from "./icons";
 export function LoginForm({
   next,
@@ -10,6 +11,8 @@ export function LoginForm({
   expired: boolean;
 }) {
   const router = useRouter();
+  const id = useId();
+  const [showPassword, setShowPassword] = useState(false);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState("");
   const [fields, setFields] = useState<Record<string, string[]>>({});
@@ -36,6 +39,7 @@ export function LoginForm({
         throw new Error(body.message);
       }
       form.reset();
+      setShowPassword(false);
       router.replace(body.redirect);
       router.refresh();
     } catch (error) {
@@ -49,14 +53,14 @@ export function LoginForm({
     }
   }
   return (
-    <form onSubmit={submit} className="login-form">
+    <form onSubmit={submit} className="login-form" aria-busy={pending}>
       {expired ? (
         <p className="notice">Your session has expired. Sign in to continue.</p>
       ) : null}
       <div className="field">
-        <label htmlFor="email">Email address</label>
+        <label htmlFor={`${id}-email`}>Email address</label>
         <input
-          id="email"
+          id={`${id}-email`}
           name="email"
           type="email"
           autoComplete="username"
@@ -64,38 +68,49 @@ export function LoginForm({
           maxLength={255}
           required
           aria-invalid={!!fields.email}
-          aria-describedby={fields.email ? "email-error" : undefined}
+          aria-describedby={fields.email ? `${id}-email-error` : undefined}
         />
         {fields.email ? (
-          <p id="email-error" className="field-error">
+          <p id={`${id}-email-error`} className="field-error">
             {fields.email[0]}
           </p>
         ) : null}
       </div>
       <div className="field">
-        <label htmlFor="password">Password</label>
+        <label htmlFor={`${id}-password`}>Password</label>
         <input
-          id="password"
+          id={`${id}-password`}
           name="password"
-          type="password"
+          type={showPassword ? "text" : "password"}
           autoComplete="current-password"
           placeholder="Enter your password"
           maxLength={1024}
           required
           aria-invalid={!!fields.password}
-          aria-describedby={fields.password ? "password-error" : undefined}
+          aria-describedby={
+            fields.password ? `${id}-password-error` : undefined
+          }
         />
+        <button
+          className="password-toggle"
+          type="button"
+          aria-controls={`${id}-password`}
+          aria-pressed={showPassword}
+          onClick={() => setShowPassword((value) => !value)}
+        >
+          {showPassword ? "Hide password" : "Show password"}
+        </button>
         {fields.password ? (
-          <p id="password-error" className="field-error">
+          <p id={`${id}-password-error`} className="field-error">
             {fields.password[0]}
           </p>
         ) : null}
       </div>
-      {error ? (
-        <p className="error-message" role="alert">
-          {error}
-        </p>
-      ) : null}
+      <FormError
+        message={error}
+        fields={fields}
+        targets={{ email: `${id}-email`, password: `${id}-password` }}
+      />
       <button className="button primary" type="submit" disabled={pending}>
         {pending ? "Signing in…" : "Sign in to your workspace"}
         <Icon name="arrow" size={18} />

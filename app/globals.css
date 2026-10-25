@@ -1703,3 +1703,58 @@ main#main {
     min-height: 44px;
   }
 }
+
+/* Form feedback */
+.error-summary {
+  padding: 16px 18px;
+  margin: 20px 0;
+  background: #fff3f0;
+  color: #87372c;
+  border: 1px solid #e7b8ae;
+  border-radius: 8px;
+  font-size: 13px;
+  line-height: 1.6;
+}
+.error-summary:focus {
+  outline: 2px solid #a43a30;
+  outline-offset: 3px;
+}
+.error-summary p {
+  margin: 0;
+  font-weight: 600;
+}
+.error-summary ul {
+  margin: 8px 0 0;
+  padding-left: 20px;
+}
+.error-summary a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.password-toggle {
+  display: block;
+  margin: 6px 0 0 auto;
+  min-height: 36px;
+  background: transparent;
+  color: #37523a;
+  border: 0;
+  font-size: 12px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.form-guidance {
+  color: #61715e;
+  line-height: 1.6;
+  font-size: 12px;
+  margin: 0 0 24px;
+}
+.description-hint {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-size: 11px;
+  color: #61715e;
+  margin-top: 8px;
+  line-height: 1.6;
+}

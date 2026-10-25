@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useId, useState, type FormEvent } from "react";
 import type { ApiErrorBody, Category, Product } from "@/lib/types";
+import { FormError } from "./form-error";
 import { Icon } from "./icons";
 
 type FieldName = "name" | "description" | "category_id" | "price" | "rating";
@@ -23,6 +24,9 @@ export function ProductForm({
   const [error, setError] = useState("");
   const [fields, setFields] = useState<Record<string, string[]>>({});
   const [missing, setMissing] = useState(false);
+  const [descriptionLength, setDescriptionLength] = useState(
+    product?.description?.length || 0,
+  );
   const returnTo = product ? `/products/${product.id}/edit` : "/products/new";
   const cancelHref = product ? `/products/${product.id}` : "/dashboard";
   function accessibility(field: FieldName) {
@@ -77,7 +81,10 @@ export function ProductForm({
         throw new Error(
           "The product response was incomplete. Refresh the collection before trying again.",
         );
-      if (!product) form.reset();
+      if (!product) {
+        form.reset();
+        setDescriptionLength(0);
+      }
       router.replace(
         `/products/${body.data.id}?notice=${product ? "updated" : "created"}`,
       );
@@ -94,6 +101,10 @@ export function ProductForm({
   }
   return (
     <form className="product-form" onSubmit={submit} aria-busy={pending}>
+      <p className="form-guidance">
+        All fields are required except the description. Changes are visible to
+        everyone in the workspace.
+      </p>
       <fieldset disabled={pending || missing} className="product-form-fields">
         <legend className="sr-only">Product information</legend>
         <div className="field full-width">
@@ -190,7 +201,15 @@ export function ProductForm({
             defaultValue={product?.description || ""}
             placeholder="What makes this product worth a closer look?"
             {...accessibility("description")}
+            aria-describedby={`${formId}-description-hint${fields.description ? ` ${formId}-description-error` : ""}`}
+            onChange={(event) =>
+              setDescriptionLength(event.currentTarget.value.length)
+            }
           />
+          <p id={`${formId}-description-hint`} className="description-hint">
+            <span>Include useful features, materials, or care details.</span>
+            <span>{descriptionLength.toLocaleString("en-US")} / 10,000</span>
+          </p>
           {fields.description ? (
             <p id={formId + "-description-error"} className="field-error">
               {fields.description[0]}
@@ -198,11 +217,17 @@ export function ProductForm({
           ) : null}
         </div>
       </fieldset>
-      {error ? (
-        <p className="error-message" role="alert">
-          {error}
-        </p>
-      ) : null}
+      <FormError
+        message={error}
+        fields={fields}
+        targets={{
+          name: `${formId}-name`,
+          category_id: `${formId}-category`,
+          price: `${formId}-price`,
+          rating: `${formId}-rating`,
+          description: `${formId}-description`,
+        }}
+      />
       {!categories.length ? (
         <p className="notice" role="status">
           No categories are available yet. Please try again once a category has
