@@ -1,9 +1,10 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  output: "standalone",
   experimental: {
     agentFeedback: true,
+    proxyClientMaxBodySize: "6mb",
   },
   cacheComponents: true,
   partialPrefetching: true,
