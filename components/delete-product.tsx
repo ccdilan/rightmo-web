@@ -1,6 +1,6 @@
 "use client";
 
-import { useId, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Icon } from "./icons";
 
@@ -10,6 +10,10 @@ export function DeleteProduct({ id, name }: { id: number; name: string }) {
   const dialog = useRef<HTMLDialogElement>(null);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState("");
+  useEffect(() => {
+    const element = dialog.current;
+    return () => element?.close();
+  }, []);
   async function remove() {
     setPending(true);
     setError("");
