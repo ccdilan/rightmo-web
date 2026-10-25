@@ -1758,3 +1758,47 @@ main#main {
   margin-top: 8px;
   line-height: 1.6;
 }
+
+/* Image selection preview */
+.upload-preview {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px;
+  margin-top: 14px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+}
+.upload-preview-image {
+  width: 120px;
+  height: 100px;
+  object-fit: contain;
+  background: #f3f5ef;
+  border-radius: 6px;
+  flex: 0 0 120px;
+}
+.upload-preview > div {
+  min-width: 0;
+  font-size: 12px;
+  line-height: 1.6;
+}
+.upload-preview strong {
+  overflow-wrap: anywhere;
+}
+.upload-preview p {
+  color: #61715e;
+  margin-top: 5px;
+}
+.upload-preview .text-button {
+  color: #37523a;
+  font-size: 12px;
+  text-decoration: underline;
+  padding-left: 0;
+  min-height: 36px;
+}
+@media (max-width: 700px) {
+  .upload-preview {
+    flex-wrap: wrap;
+  }
+}

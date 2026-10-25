@@ -67,3 +67,14 @@ export const MAX_IMAGE_BYTES = 5 * 1024 * 1024;
 export const MAX_MULTIPART_BYTES = 6 * 1024 * 1024;
 
 export const MAX_PRODUCT_JSON_BYTES = 64 * 1024;
+
+export function imageFileError(
+  file: { size: number; type: string } | null,
+): string | null {
+  if (!file || !file.size) return "Choose an image before uploading.";
+  if (file.size > MAX_IMAGE_BYTES)
+    return "This image is too large. Choose a file up to 5 MB.";
+  if (!["image/jpeg", "image/png", "image/webp"].includes(file.type))
+    return "Choose a JPEG, PNG, or WebP image.";
+  return null;
+}
