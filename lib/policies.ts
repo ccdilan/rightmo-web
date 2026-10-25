@@ -22,7 +22,8 @@ export function safeReturnTo(value: unknown): string {
       parsed.origin !== "https://rightmo.invalid" ||
       !(
         parsed.pathname === "/dashboard" ||
-        /^\/products\/\d+$/.test(parsed.pathname)
+        parsed.pathname === "/products/new" ||
+        /^\/products\/\d+(?:\/edit)?$/.test(parsed.pathname)
       )
     )
       return "/dashboard";
@@ -54,3 +55,5 @@ export function catalogQuery(
 }
 export const MAX_IMAGE_BYTES = 5 * 1024 * 1024;
 export const MAX_MULTIPART_BYTES = 6 * 1024 * 1024;
+
+export const MAX_PRODUCT_JSON_BYTES = 64 * 1024;

@@ -38,9 +38,10 @@ export function routeError(error: unknown): NextResponse {
 }
 export async function readJson(
   request: Request,
+  maxBytes = 8192,
 ): Promise<Record<string, unknown>> {
   try {
-    const bytes = await readBoundedBody(request, 8192);
+    const bytes = await readBoundedBody(request, maxBytes);
     const body = JSON.parse(new TextDecoder().decode(bytes));
     if (!body || typeof body !== "object" || Array.isArray(body))
       throw new Error();

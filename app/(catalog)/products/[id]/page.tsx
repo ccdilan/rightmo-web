@@ -2,13 +2,20 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import { ApiError, authenticated } from "@/lib/api";
-import type { Product } from "@/lib/types";
+import { DeleteProduct } from "@/components/delete-product";
+import type { Product, SearchParams } from "@/lib/types";
 import { displayCurrency, formatPrice } from "@/lib/format";
 import { ProductImage } from "@/components/product-image";
 import { ImageUpload } from "@/components/image-upload";
 import { Icon } from "@/components/icons";
 export const metadata = { title: "Product details" };
-async function Details({ params }: { params: Promise<{ id: string }> }) {
+async function Details({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ id: string }>;
+  searchParams: Promise<SearchParams>;
+}) {
   const { id } = await params;
   if (!/^\d+$/.test(id)) notFound();
   let product: Product;
@@ -23,12 +30,29 @@ async function Details({ params }: { params: Promise<{ id: string }> }) {
     if (error instanceof ApiError && error.status === 404) notFound();
     throw error;
   }
+  const query = await searchParams;
   return (
     <>
-      <Link href="/dashboard" className="back-link">
-        <Icon name="back" size={17} />
-        Back to collection
-      </Link>
+      {query.notice === "created" || query.notice === "updated" ? (
+        <p className="notice success-notice" role="status">
+          {query.notice === "created"
+            ? "Product created. You can now add an image below."
+            : "Product updated."}
+        </p>
+      ) : null}
+      <div className="detail-toolbar">
+        <Link href="/dashboard" className="back-link">
+          <Icon name="back" size={17} />
+          Back to collection
+        </Link>
+        <div className="product-actions">
+          <Link className="button secondary" href={`/products/${id}/edit`}>
+            <Icon name="edit" size={17} />
+            Edit product
+          </Link>
+          <DeleteProduct key={product.id} id={product.id} name={product.name} />
+        </div>
+      </div>
       <div className="detail-grid">
         <div className="detail-image">
           <ProductImage src={product.image_url} name={product.name} priority />
@@ -69,6 +93,7 @@ async function Details({ params }: { params: Promise<{ id: string }> }) {
 }
 export default function ProductPage(props: {
   params: Promise<{ id: string }>;
+  searchParams: Promise<SearchParams>;
 }) {
   return (
     <Suspense

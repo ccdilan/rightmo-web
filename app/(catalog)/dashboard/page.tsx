@@ -43,6 +43,11 @@ async function Catalog({
   }
   return (
     <>
+      {params.notice === "deleted" ? (
+        <p className="notice success-notice" role="status">
+          Product deleted from the collection.
+        </p>
+      ) : null}
       <div className="page-heading">
         <div>
           <span className="eyebrow">CURATED BY YOU</span>
@@ -51,10 +56,16 @@ async function Catalog({
           </h1>
           <p>A little inspiration. A lot to discover.</p>
         </div>
-        <span className="collection-count">
-          <Icon name="box" size={18} />
-          {products?.meta.total ?? "—"} products
-        </span>
+        <div className="heading-actions">
+          <span className="collection-count">
+            <Icon name="box" size={18} />
+            {products?.meta.total ?? "—"} products
+          </span>
+          <Link className="button primary" href="/products/new">
+            <Icon name="plus" size={17} />
+            Add product
+          </Link>
+        </div>
       </div>
       <CatalogFilters categories={categories} query={query.toString()} />
       {validation ? (

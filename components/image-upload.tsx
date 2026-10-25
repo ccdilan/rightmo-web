@@ -1,10 +1,11 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { useState, type FormEvent } from "react";
+import { useId, useState, type FormEvent } from "react";
 import { MAX_IMAGE_BYTES } from "@/lib/policies";
 import { Icon } from "./icons";
 export function ImageUpload({ productId }: { productId: number }) {
   const router = useRouter();
+  const inputId = useId();
   const [pending, setPending] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
@@ -61,12 +62,12 @@ export function ImageUpload({ productId }: { productId: number }) {
         <p>Give this product a fresh perspective.</p>
       </div>
       <form onSubmit={submit}>
-        <label className="file-picker" htmlFor="product-image">
+        <label className="file-picker" htmlFor={inputId}>
           <Icon name="upload" size={26} />
           <span>{fileName || "Choose an image"}</span>
           <small>JPEG, PNG, or WebP · Up to 5 MB</small>
           <input
-            id="product-image"
+            id={inputId}
             name="image"
             type="file"
             accept="image/jpeg,image/png,image/webp"

@@ -9,6 +9,9 @@ const paths = {
   star: "m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-3-5.6 3 1.1-6.2L3 9.6l6.2-.9z",
   logout: "M9 4H4v16h5m6-13 5 5-5 5M9 12h11",
   box: "m12 3 9 5v9l-9 5-9-5V8zm0 10v9M3 8l9 5 9-5M7.5 5.5l9 5",
+  plus: "M12 5v14M5 12h14",
+  edit: "m16 3 5 5-12 12H4v-5zm-2 2 5 5",
+  trash: "M3 6h18M9 6V3h6v3M5 6l1 15h12l1-15M10 10v7M14 10v7",
   check: "m5 12 4 4L19 6",
 };
 export function Icon({

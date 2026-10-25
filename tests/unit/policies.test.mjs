@@ -12,12 +12,17 @@ test("return URLs only allow local catalog routes", () => {
     "/\\evil.test",
     "/api/auth/logout",
     "/login",
+    "/products/new/edit",
+    "/products/12/delete",
+    "/products/example/edit",
     "/%2f%2fevil.test",
     " /dashboard",
     null,
   ])
     assert.equal(safeReturnTo(value), "/dashboard");
   assert.equal(safeReturnTo("/products/12"), "/products/12");
+  assert.equal(safeReturnTo("/products/new"), "/products/new");
+  assert.equal(safeReturnTo("/products/12/edit"), "/products/12/edit");
   assert.equal(
     safeReturnTo("/dashboard?search=lamp&page=2"),
     "/dashboard?search=lamp&page=2",

@@ -31,13 +31,15 @@ a {
 }
 button,
 input,
-select {
+select,
+textarea {
   font: inherit;
 }
 button,
 a,
 input,
-select {
+select,
+textarea {
   -webkit-tap-highlight-color: transparent;
 }
 button {
@@ -51,12 +53,14 @@ a:focus-visible,
 button:focus-visible,
 input:focus-visible,
 select:focus-visible,
+textarea:focus-visible,
 .file-picker:focus-within {
   outline: 3px solid #98b67f;
   outline-offset: 3px;
 }
 input,
-select {
+select,
+textarea {
   color: var(--ink);
   background: #fff;
   border: 1px solid var(--line);
@@ -67,7 +71,8 @@ input::placeholder {
   color: #9aa198;
 }
 input:focus,
-select:focus {
+select:focus,
+textarea:focus {
   border-color: #789568;
 }
 h1,
@@ -1314,5 +1319,161 @@ main#main {
     animation: none !important;
     transition: none !important;
     scroll-behavior: auto !important;
+  }
+}
+
+/* Product management */
+.heading-actions,
+.product-actions,
+.detail-toolbar,
+.form-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.heading-actions {
+  justify-content: flex-end;
+}
+.detail-toolbar {
+  justify-content: space-between;
+  margin-bottom: 28px;
+}
+.detail-toolbar .back-link {
+  margin-bottom: 0;
+}
+.success-notice {
+  margin-bottom: 22px;
+}
+.editor-page {
+  max-width: 840px;
+  margin: 0 auto;
+  width: 100%;
+}
+.editor-page .page-heading p {
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+.product-form {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 32px;
+}
+.product-form-fields {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+}
+.product-form .field {
+  margin: 0;
+  min-width: 0;
+}
+.product-form .full-width {
+  grid-column: 1 / -1;
+}
+.product-form input,
+.product-form select,
+.product-form textarea {
+  width: 100%;
+  padding: 12px 14px;
+}
+.product-form textarea {
+  resize: vertical;
+  min-height: 150px;
+  line-height: 1.6;
+}
+.optional-label {
+  color: var(--muted);
+  font-weight: 400;
+  margin-left: 5px;
+  font-size: 11px;
+}
+.form-actions {
+  justify-content: flex-end;
+  margin-top: 28px;
+}
+.product-form > .error-message,
+.product-form > .notice {
+  margin-top: 20px;
+}
+.danger-outline {
+  background: #fff;
+  border-color: #e6d3d0;
+  color: #9f3b31;
+}
+.danger-outline:hover {
+  background: #fff1ef;
+}
+.danger {
+  background: #a43a30;
+  color: #fff;
+}
+.danger:hover {
+  background: #842a23;
+}
+.confirm-dialog {
+  margin: auto;
+  width: min(460px, calc(100vw - 32px));
+  max-height: calc(100dvh - 40px);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 30px;
+  color: var(--ink);
+  box-shadow: 0 24px 80px #1f362333;
+}
+.confirm-dialog::backdrop {
+  background: #182a2477;
+  backdrop-filter: blur(3px);
+}
+.confirm-dialog h2 {
+  font-size: 23px;
+  margin: 16px 0 12px;
+}
+.confirm-dialog > p {
+  line-height: 1.7;
+  color: #616e65;
+  overflow-wrap: anywhere;
+}
+.danger-icon {
+  display: inline-flex;
+  color: #a43a30;
+  padding: 12px;
+  background: #fff0ec;
+  border-radius: 50%;
+}
+@media (max-width: 700px) {
+  .page-heading:has(.heading-actions) {
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 18px;
+  }
+  .heading-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+  .product-form {
+    padding: 22px 18px;
+  }
+  .product-form-fields {
+    gap: 20px 14px;
+  }
+  .detail-toolbar {
+    gap: 20px;
+  }
+  .product-actions {
+    width: 100%;
+  }
+  .product-actions > .button {
+    flex: 1;
+  }
+  .confirm-dialog {
+    padding: 24px;
+  }
+  .confirm-dialog .form-actions {
+    gap: 10px;
   }
 }

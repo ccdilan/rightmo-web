@@ -29,17 +29,18 @@ The documentation's API tester uses a bearer token obtained from its login endpo
 - Login, logout, expired-session handling, and protected catalog/detail data.
 - Responsive product cards with category, price, rating, and image.
 - Search, category/price filters, price/rating sorting, and pagination retained in URL parameters. Submit with Apply filters or Enter; criteria changes reset the page.
+- Product creation from **Add product**, editing from product details, and deletion with a confirmation dialog. Forms cover name, description, category, price, and rating with field-level validation and saving states.
 - Dynamic product details and image upload/replacement, with inline validation, pending/error/success states, and refreshed product data.
 - Missing-image fallback, empty results, invalid filters, missing products, and retryable service errors.
 - Keyboard-friendly forms, visible focus, skip navigation, and reduced-motion support.
 
-Creation/editing/deletion of product records are API capabilities, not frontend screens in this scope. The only frontend write besides authentication is image replacement.
+All authenticated users can manage the shared catalog. Create a product first, then upload its image from the details page. Editing preserves the existing image; deleting a product also removes its image. The delete dialog supports keyboard navigation and Escape to cancel. Successful writes refresh the catalog and details.
 
 ## Authentication and data flow
 
 Browser → same-origin Next.js handler → Laravel bearer-token API.
 
-Login exchanges credentials on the Next.js server and stores the resulting eight-hour Sanctum token in a host-only HttpOnly SameSite=Lax cookie. Secure is enabled whenever `APP_ORIGIN` uses HTTPS. The browser receives user details and a validated local redirect path, never the token. Every browser mutation checks the exact Origin; login, logout, and upload use explicit handlers rather than a general-purpose API proxy. Logout revokes the backend token and clears the cookie. An unavailable backend leaves logout retryable.
+Login exchanges credentials on the Next.js server and stores the resulting eight-hour Sanctum token in a host-only HttpOnly SameSite=Lax cookie. Secure is enabled whenever `APP_ORIGIN` uses HTTPS. The browser receives user details and a validated local redirect path, never the token. Every browser mutation checks the exact Origin; login, logout, product creation/update/deletion, and upload use explicit handlers rather than a general-purpose API proxy. Product handlers forward only editable fields, enforce a 64 KiB JSON limit, and preserve Laravel field errors. New/edit routes recheck authentication at data access and can be resumed after sign-in through validated local return URLs. Logout revokes the backend token and clears the cookie. An unavailable backend leaves logout retryable.
 
 Server Components read the cookie and fetch Laravel with `cache: no-store`. Protected data access validates the token through Laravel even if a cookie exists. Redirects on 401 distinguish expired sessions from service failures. Cached components provide only the static shell; protected data stays behind Suspense boundaries and is not shared across requests. Image URLs are public assets; `next/image` renders them unoptimized so a browser can load local Docker assets without an image-optimization proxy.
 
@@ -57,6 +58,6 @@ npm start
 npm run test:integration
 ```
 
-Unit tests exercise safe redirects, exact origin checking, query serialization, and request size boundaries. The integration test verifies login cookies/token privacy, CSRF rejection, protected rendering, invalid uploads, successful image replacement, logout, and cleanup using a temporary product. It requires the demo account and creates/deletes its own product without modifying seeded products.
+Unit tests exercise safe redirects (including new/edit forms), exact origin checking, query serialization, request size boundaries, and product field filtering. The integration test verifies login cookies/token privacy, CSRF rejection, protected forms, create/update/delete through Next.js, field errors and duplicate names, partial updates, large descriptions, invalid uploads, image replacement/deletion, logout, and expired-session mutations using a temporary product. It requires the demo account and creates/deletes its own product without modifying seeded products.
 
-For a browser acceptance pass: log in, combine a name/category/price filter, change sorting, advance a page, refresh and use Back, open product details, upload an image, return to the catalog, and sign out. Repeat at a narrow mobile width and with keyboard navigation. GitHub Actions runs lint, types, unit tests, and the production build on Node 22. Deployment is outside this repository setup.
+For a browser acceptance pass: log in, combine a name/category/price filter, change sorting, advance a page, refresh and use Back, create a product, edit its details, upload an image, confirm the updated card in the catalog, cancel a delete dialog, delete the temporary product, and sign out. Repeat at a narrow mobile width and with keyboard navigation. GitHub Actions runs lint, types, unit tests, and the production build on Node 22. Deployment is outside this repository setup.
