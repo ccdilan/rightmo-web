@@ -18,7 +18,8 @@ export function LoginForm({
     setPending(true);
     setError("");
     setFields({});
-    const data = new FormData(event.currentTarget);
+    const form = event.currentTarget;
+    const data = new FormData(form);
     try {
       const response = await fetch("/api/auth/login", {
         method: "POST",
@@ -34,6 +35,7 @@ export function LoginForm({
         setFields(body.errors || {});
         throw new Error(body.message);
       }
+      form.reset();
       router.replace(body.redirect);
       router.refresh();
     } catch (error) {
@@ -42,6 +44,7 @@ export function LoginForm({
           ? error.message
           : "Couldn't sign in. Please try again.",
       );
+    } finally {
       setPending(false);
     }
   }

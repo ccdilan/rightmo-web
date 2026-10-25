@@ -23,6 +23,7 @@ export function LogoutButton() {
           ? error.message
           : "Couldn't sign out. Try again.",
       );
+    } finally {
       setPending(false);
     }
   }
