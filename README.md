@@ -16,6 +16,14 @@ npm run dev
 
 The API must be running at `API_INTERNAL_URL` (default `http://127.0.0.1:8080`). `APP_ORIGIN` is the exact browser origin allowed to submit mutations, default `http://localhost:3000`; use that hostname consistently. `DISPLAY_CURRENCY` defaults to `USD`. It controls formatting only and does not convert stored prices. Environment variables are server-only; no API token or backend secret is exposed as a `NEXT_PUBLIC_` variable.
 
+## API documentation
+
+The backend provides **[Scribe API documentation](http://localhost:8080/docs/)** with endpoint descriptions, validation rules, example responses, and **Try it out**. Download its [OpenAPI specification](http://localhost:8080/docs/openapi.json) or [Postman collection](http://localhost:8080/docs/collection.json).
+
+Docker generates the documentation during the API build. For native development, run `composer docs` from the sibling `rightmo-api` repository. Follow the [API documentation workflow](https://github.com/ccdilan/rightmo-api#api) when updating endpoint contracts.
+
+The documentation's API tester uses a bearer token obtained from its login endpoint. The Next.js application's token remains in its HttpOnly cookie.
+
 ## Features
 
 - Login, logout, expired-session handling, and protected catalog/detail data.
