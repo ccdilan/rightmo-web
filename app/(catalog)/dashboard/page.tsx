@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { Suspense } from "react";
 import { ApiError, authenticated } from "@/lib/api";
+import { LoadingSkeleton } from "@/components/loading-skeleton";
+import { pageNumbers } from "@/lib/catalog-query";
 import { catalogQuery } from "@/lib/policies";
 import { displayCurrency, formatPrice } from "@/lib/format";
 import type { Category, ProductPage, SearchParams } from "@/lib/types";
@@ -67,7 +69,11 @@ async function Catalog({
           </Link>
         </div>
       </div>
-      <CatalogFilters categories={categories} query={query.toString()} />
+      <CatalogFilters
+        categories={categories}
+        query={query.toString()}
+        currency={currency}
+      />
       {validation ? (
         <div className="empty-state">
           <h2>Let’s adjust those filters.</h2>
@@ -79,7 +85,12 @@ async function Catalog({
       ) : null}
       {products ? (
         <>
-          <div className="results-bar">
+          <div
+            className="results-bar"
+            role="status"
+            aria-live="polite"
+            aria-atomic="true"
+          >
             <p>
               <strong>{query.size ? "Your results" : "The collection"}</strong>
               <span>
@@ -131,10 +142,35 @@ async function Catalog({
           ) : (
             <div className="empty-state">
               <Icon name="search" size={36} />
-              <h2>No finds just yet.</h2>
-              <p>Try a different search or a wider price range.</p>
-              <Link className="button secondary" href="/dashboard">
-                Explore all products
+              <h2>
+                {products.meta.total
+                  ? "This page has no products."
+                  : query.size
+                    ? "No products match these filters."
+                    : "Your collection starts here."}
+              </h2>
+              <p>
+                {products.meta.total
+                  ? "The collection may have changed. Return to the first page."
+                  : query.size
+                    ? "Remove a category, lower the minimum rating, or widen the price range."
+                    : "Add your first product to start building the shared catalog."}
+              </p>
+              <Link
+                className="button secondary"
+                href={
+                  products.meta.total
+                    ? pageLink(1)
+                    : query.size
+                      ? "/dashboard"
+                      : "/products/new"
+                }
+              >
+                {products.meta.total
+                  ? "Go to first page"
+                  : query.size
+                    ? "Clear filters"
+                    : "Add product"}
               </Link>
             </div>
           )}
@@ -160,6 +196,30 @@ async function Catalog({
                   Previous
                 </span>
               )}
+              <div className="page-numbers">
+                {pageNumbers(
+                  products.meta.current_page,
+                  products.meta.last_page,
+                ).map((page, index) =>
+                  page === null ? (
+                    <span key={`gap-${index}`} aria-hidden="true">
+                      …
+                    </span>
+                  ) : (
+                    <Link
+                      key={page}
+                      href={pageLink(page)}
+                      className="page-number"
+                      aria-label={`Page ${page}`}
+                      aria-current={
+                        page === products.meta.current_page ? "page" : undefined
+                      }
+                    >
+                      {page}
+                    </Link>
+                  ),
+                )}
+              </div>
               {products.meta.current_page < products.meta.last_page ? (
                 <Link
                   className="button secondary small"
@@ -188,14 +248,7 @@ export default function Dashboard(props: {
   searchParams: Promise<SearchParams>;
 }) {
   return (
-    <Suspense
-      fallback={
-        <div className="loading-state" role="status">
-          <span className="loading-dot" />
-          Getting your collection ready…
-        </div>
-      }
-    >
+    <Suspense fallback={<LoadingSkeleton />}>
       <Catalog {...props} />
     </Suspense>
   );

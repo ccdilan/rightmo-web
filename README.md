@@ -28,7 +28,8 @@ The documentation's API tester uses a bearer token obtained from its login endpo
 
 - Login, logout, expired-session handling, and protected catalog/detail data.
 - Responsive product cards with category, price, rating, and image.
-- Search, category/price filters, price/rating sorting, and pagination retained in URL parameters. Submit with Apply filters or Enter; criteria changes reset the page.
+- Search words in any order, multiple category checkboxes, price/rating filters, sorting, and page-size controls retained in URL parameters. Submit with Apply filters or Enter; criteria changes reset the page. Remove individual applied filters with their chips. Refresh and Back preserve selections.
+- Numbered pagination, first-page recovery after the catalog changes, and layout-shaped loading skeletons for catalog/detail/forms.
 - Product creation from **Add product**, editing from product details, and deletion with a confirmation dialog. Forms cover name, description, category, price, and rating with field-level validation and saving states.
 - Dynamic product details and image upload/replacement, with inline validation, pending/error/success states, and refreshed product data.
 - Missing-image fallback, empty results, invalid filters, missing products, and retryable service errors.

@@ -1,6 +1,7 @@
 const catalogKeys = new Set([
   "search",
   "category_id",
+  "min_rating",
   "min_price",
   "max_price",
   "sort_by",
@@ -44,6 +45,15 @@ export function catalogQuery(
 ): URLSearchParams {
   const query = new URLSearchParams();
   for (const [key, value] of Object.entries(params)) {
+    if (key === "category_ids[]") {
+      for (const item of Array.isArray(value)
+        ? value
+        : value === undefined
+          ? []
+          : [value])
+        query.append(key, item);
+      continue;
+    }
     if (
       catalogKeys.has(key) &&
       typeof value === "string" &&

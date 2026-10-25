@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { LoadingSkeleton } from "@/components/loading-skeleton";
 import { Suspense } from "react";
 import { authenticated } from "@/lib/api";
 import { displayCurrency } from "@/lib/format";
@@ -33,13 +34,7 @@ async function NewProduct() {
 }
 export default function NewProductPage() {
   return (
-    <Suspense
-      fallback={
-        <div className="loading-state" role="status">
-          Getting the product form ready…
-        </div>
-      }
-    >
+    <Suspense fallback={<LoadingSkeleton kind="form" />}>
       <NewProduct />
     </Suspense>
   );

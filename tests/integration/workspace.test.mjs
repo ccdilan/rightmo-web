@@ -207,6 +207,29 @@ test("the workspace protects sessions and supports product CRUD and image update
       html,
       new RegExp(token.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")),
     );
+    const discoveryQuery = new URLSearchParams({
+      search: `edited ${name}`,
+      min_rating: "3.5",
+      min_price: "30",
+      max_price: "40",
+      per_page: "24",
+    });
+    discoveryQuery.append("category_ids[]", String(categories.data[0].id));
+    discoveryQuery.append("category_ids[]", String(categories.data[1].id));
+    const discovery = await (
+      await fetch(`${web}/dashboard?${discoveryQuery}`, {
+        headers: { Cookie: cookie },
+      })
+    ).text();
+    assert.ok(discovery.includes(`${name} edited`));
+    assert.ok(discovery.includes("Applied filters"));
+    assert.ok(discovery.includes("Remove 3.5 stars"));
+    const noMatches = await (
+      await fetch(`${web}/dashboard?${discoveryQuery}&page=999`, {
+        headers: { Cookie: cookie },
+      })
+    ).text();
+    assert.ok(noMatches.includes("Go to first page"));
     const invalid = new FormData();
     invalid.set(
       "image",

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { LoadingSkeleton } from "@/components/loading-skeleton";
 import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import { ApiError, authenticated } from "@/lib/api";
@@ -58,13 +59,7 @@ export default function EditProductPage(props: {
   params: Promise<{ id: string }>;
 }) {
   return (
-    <Suspense
-      fallback={
-        <div className="loading-state" role="status">
-          Loading product details…
-        </div>
-      }
-    >
+    <Suspense fallback={<LoadingSkeleton kind="form" />}>
       <EditProduct {...props} />
     </Suspense>
   );

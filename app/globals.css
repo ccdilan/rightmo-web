@@ -1108,8 +1108,8 @@ main#main {
     font-size: 29px;
   }
   .collection-count {
-    font-size: 0;
-    gap: 0;
+    font-size: 12px;
+    gap: 9px;
     padding: 10px;
   }
   .collection-count svg {
@@ -1475,5 +1475,231 @@ main#main {
   }
   .confirm-dialog .form-actions {
     gap: 10px;
+  }
+}
+
+/* Catalog discovery and navigation */
+.filter-fields {
+  border: 0;
+  padding: 24px;
+  margin: 0;
+  min-width: 0;
+}
+.discovery-top {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 220px;
+  gap: 24px;
+  align-items: start;
+}
+.discovery-search label,
+.discovery-control label,
+.category-options legend {
+  display: block;
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 9px;
+}
+.discovery-search .search-field {
+  margin-top: 8px;
+  width: 100%;
+}
+.discovery-search input {
+  min-width: 0;
+  width: 100%;
+}
+.control-hint {
+  color: #61715e;
+  font-size: 11px;
+  line-height: 1.6;
+  margin-top: 8px;
+}
+.discovery-control {
+  min-width: 0;
+}
+.discovery-control select,
+.discovery-control input {
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 12px;
+  font-size: 12px;
+}
+.category-options {
+  border: 0;
+  padding: 0;
+  margin: 22px 0;
+  min-width: 0;
+}
+.category-options .control-hint {
+  font-weight: 400;
+  margin-left: 8px;
+}
+.category-choices {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.category-choice {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 10px 14px;
+  min-height: 44px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  font-size: 12px;
+  cursor: pointer;
+}
+.category-choice:has(input:checked) {
+  background: #edf3e8;
+  border-color: var(--green);
+  color: var(--green);
+}
+.category-choice input {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--green);
+}
+.discovery-bottom {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+.discovery-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-top: 22px;
+}
+.active-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding-top: 14px;
+  font-size: 12px;
+}
+.filter-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: #edf2e9;
+  color: #37523a;
+  border: 1px solid #ccd9c6;
+  border-radius: 30px;
+  padding: 8px 12px;
+  min-height: 36px;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  text-align: left;
+  font-size: 12px;
+}
+.filter-chip span {
+  font-size: 18px;
+}
+.active-filters .text-button {
+  color: #37523a;
+  font-size: 12px;
+  min-height: 40px;
+}
+.pagination .page-numbers {
+  gap: 5px;
+}
+.page-number {
+  min-width: 36px;
+  min-height: 36px;
+  padding: 9px;
+  text-align: center;
+  border-radius: 6px;
+  border: 1px solid var(--line);
+  font-size: 12px;
+}
+.page-number[aria-current="page"] {
+  background: var(--green);
+  color: #fff;
+  border-color: var(--green);
+}
+.skeleton-block {
+  background: #e9ede5;
+  border-radius: 7px;
+}
+.skeleton-heading {
+  width: 50%;
+  height: 38px;
+  margin-bottom: 16px;
+}
+.skeleton-subheading {
+  width: 65%;
+  height: 16px;
+  margin-bottom: 30px;
+}
+.skeleton-filters {
+  height: 300px;
+  margin-bottom: 32px;
+}
+.skeleton-card {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  overflow: hidden;
+  padding-bottom: 20px;
+}
+.skeleton-picture {
+  height: 200px;
+  border-radius: 0;
+}
+.skeleton-line {
+  height: 18px;
+  margin: 20px 18px 0;
+}
+.skeleton-line.short {
+  width: 40%;
+}
+.skeleton-detail-picture {
+  min-height: 400px;
+}
+.skeleton-field {
+  height: 55px;
+  margin-bottom: 30px;
+}
+@media (max-width: 950px) {
+  .discovery-top {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+  .discovery-bottom {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 700px) {
+  .filter-fields {
+    padding: 16px;
+  }
+  .category-options .control-hint {
+    display: block;
+    margin-left: 0;
+  }
+  .discovery-actions {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .discovery-actions .button {
+    justify-content: center;
+  }
+  .pagination {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .pagination > div {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .category-choice {
+    flex: 1 0 40%;
+  }
+  .filter-chip {
+    min-height: 44px;
   }
 }
