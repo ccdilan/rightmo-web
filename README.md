@@ -61,3 +61,7 @@ npm run test:integration
 Unit tests exercise safe redirects (including new/edit forms), exact origin checking, query serialization, request size boundaries, and product field filtering. The integration test verifies login cookies/token privacy, CSRF rejection, protected forms, create/update/delete through Next.js, field errors and duplicate names, partial updates, large descriptions, invalid uploads, image replacement/deletion, logout, and expired-session mutations using a temporary product. It requires the demo account and creates/deletes its own product without modifying seeded products.
 
 For a browser acceptance pass: log in, combine a name/category/price filter, change sorting, advance a page, refresh and use Back, create a product, edit its details, upload an image, confirm the updated card in the catalog, cancel a delete dialog, delete the temporary product, and sign out. Repeat at a narrow mobile width and with keyboard navigation. GitHub Actions runs lint, types, unit tests, and the production build on Node 22. Deployment is outside this repository setup.
+
+## Engineering improvements
+
+See [the engineering plan](ENGINEERING_PLAN.md) for the ordered UI/UX, search, accessibility, and performance work with acceptance criteria. Changes are delivered as separate Conventional Commits.
