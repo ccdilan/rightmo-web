@@ -4,7 +4,7 @@ import { ApiError, authenticated } from "@/lib/api";
 import { LoadingSkeleton } from "@/components/loading-skeleton";
 import { pageNumbers } from "@/lib/catalog-query";
 import { catalogQuery } from "@/lib/policies";
-import { displayCurrency, formatPrice } from "@/lib/format";
+import { displayCurrency, createPriceFormatter } from "@/lib/format";
 import type { Category, ProductPage, SearchParams } from "@/lib/types";
 import { CatalogFilters } from "@/components/catalog-filters";
 import { ProductImage } from "@/components/product-image";
@@ -38,6 +38,7 @@ async function Catalog({
         .join(" ") || results[0].reason.message;
   else throw results[0].reason;
   const currency = displayCurrency();
+  const formatPrice = createPriceFormatter(currency);
   function pageLink(page: number) {
     const next = new URLSearchParams(query);
     next.set("page", String(page));
@@ -129,7 +130,7 @@ async function Catalog({
                     </div>
                     <h2>{product.name}</h2>
                     <div className="card-bottom">
-                      <strong>{formatPrice(product.price, currency)}</strong>
+                      <strong>{formatPrice(product.price)}</strong>
                       <span>
                         View product
                         <Icon name="arrow" size={14} />
