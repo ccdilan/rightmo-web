@@ -6,11 +6,19 @@ export async function POST(request: Request) {
     verifyOrigin(request);
     const token = await sessionToken();
     if (token) {
-      try { await laravel("/auth/logout", { method: "POST" }, token); }
-      catch (error) { if (!(error instanceof ApiError && error.status === 401)) throw error; }
+      try {
+        await laravel("/auth/logout", { method: "POST" }, token);
+      } catch (error) {
+        if (!(error instanceof ApiError && error.status === 401)) throw error;
+      }
     }
-    const response = new NextResponse(null, { status: 204, headers: { "Cache-Control": "no-store" } });
+    const response = new NextResponse(null, {
+      status: 204,
+      headers: { "Cache-Control": "no-store" },
+    });
     response.cookies.set(SESSION_COOKIE, "", { ...cookieOptions(), maxAge: 0 });
     return response;
-  } catch (error) { return routeError(error); }
+  } catch (error) {
+    return routeError(error);
+  }
 }
