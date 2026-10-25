@@ -1,19 +1,54 @@
-const catalogKeys = new Set(["search", "category_id", "min_price", "max_price", "sort_by", "sort_direction", "page", "per_page"]);
+const catalogKeys = new Set([
+  "search",
+  "category_id",
+  "min_price",
+  "max_price",
+  "sort_by",
+  "sort_direction",
+  "page",
+  "per_page",
+]);
 export function safeReturnTo(value: unknown): string {
-  if (typeof value !== "string" || !value.startsWith("/") || value.startsWith("//") || /[\\\u0000-\u0020]/.test(value)) return "/dashboard";
+  if (
+    typeof value !== "string" ||
+    !value.startsWith("/") ||
+    value.startsWith("//") ||
+    /[\\\u0000-\u0020]/.test(value)
+  )
+    return "/dashboard";
   try {
     const parsed = new URL(value, "https://rightmo.invalid");
-    if (parsed.origin !== "https://rightmo.invalid" || !(parsed.pathname === "/dashboard" || /^\/products\/\d+$/.test(parsed.pathname))) return "/dashboard";
+    if (
+      parsed.origin !== "https://rightmo.invalid" ||
+      !(
+        parsed.pathname === "/dashboard" ||
+        /^\/products\/\d+$/.test(parsed.pathname)
+      )
+    )
+      return "/dashboard";
     return parsed.pathname + parsed.search;
-  } catch { return "/dashboard"; }
+  } catch {
+    return "/dashboard";
+  }
 }
 export function isSameOrigin(origin: string | null, expected: string): boolean {
-  try { return origin !== null && origin === new URL(expected).origin; } catch { return false; }
+  try {
+    return origin !== null && origin === new URL(expected).origin;
+  } catch {
+    return false;
+  }
 }
-export function catalogQuery(params: Record<string, string | string[] | undefined>): URLSearchParams {
+export function catalogQuery(
+  params: Record<string, string | string[] | undefined>,
+): URLSearchParams {
   const query = new URLSearchParams();
   for (const [key, value] of Object.entries(params)) {
-    if (catalogKeys.has(key) && typeof value === "string" && value.trim() !== "") query.set(key, value.trim());
+    if (
+      catalogKeys.has(key) &&
+      typeof value === "string" &&
+      value.trim() !== ""
+    )
+      query.set(key, value.trim());
   }
   return query;
 }

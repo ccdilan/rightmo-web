@@ -11,7 +11,39 @@ const paths = {
   box: "m12 3 9 5v9l-9 5-9-5V8zm0 10v9M3 8l9 5 9-5M7.5 5.5l9 5",
   check: "m5 12 4 4L19 6",
 };
-export function Icon({ name, size = 20, style }: { name: keyof typeof paths; size?: number; style?: CSSProperties }) {
-  return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={style}><path d={paths[name]} /></svg>;
+export function Icon({
+  name,
+  size = 20,
+  style,
+}: {
+  name: keyof typeof paths;
+  size?: number;
+  style?: CSSProperties;
+}) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.6"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      style={style}
+    >
+      <path d={paths[name]} />
+    </svg>
+  );
 }
-export function Brand() { return <span className="brand"><span className="brand-mark"><Icon name="box" size={23} /></span>rightmo<span className="brand-dot">.</span></span>; }
+export function Brand() {
+  return (
+    <span className="brand">
+      <span className="brand-mark">
+        <Icon name="box" size={23} />
+      </span>
+      rightmo<span className="brand-dot">.</span>
+    </span>
+  );
+}
