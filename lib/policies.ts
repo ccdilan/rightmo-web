@@ -23,6 +23,7 @@ export function safeReturnTo(value: unknown): string {
       parsed.origin !== "https://rightmo.invalid" ||
       !(
         parsed.pathname === "/dashboard" ||
+        parsed.pathname === "/categories" ||
         parsed.pathname === "/products/new" ||
         /^\/products\/\d+(?:\/edit)?$/.test(parsed.pathname)
       )

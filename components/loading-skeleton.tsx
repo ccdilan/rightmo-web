@@ -1,17 +1,19 @@
 export function LoadingSkeleton({
   kind = "catalog",
+  label,
 }: {
   kind?: "catalog" | "detail" | "form";
+  label?: string;
 }) {
   return (
     <div className={`loading-skeleton skeleton-${kind}`} role="status">
       <span className="sr-only">
         Loading{" "}
-        {kind === "catalog"
+        {label ?? (kind === "catalog"
           ? "products"
           : kind === "detail"
             ? "product details"
-            : "product form"}
+            : "product form")}
         …
       </span>
       <div aria-hidden="true">

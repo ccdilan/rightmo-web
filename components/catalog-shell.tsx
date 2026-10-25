@@ -2,7 +2,8 @@ import Link from "next/link";
 import { Suspense, type ReactNode } from "react";
 import { laravel, sessionToken } from "@/lib/api";
 import type { User } from "@/lib/types";
-import { Brand, Icon } from "./icons";
+import { WorkspaceLinks, WorkspaceNavigation } from "./workspace-navigation";
+import { Brand } from "./icons";
 import { LogoutButton } from "./logout-button";
 async function Account() {
   const token = await sessionToken();
@@ -46,13 +47,9 @@ export function CatalogShell({ children }: { children: ReactNode }) {
           <span className="workspace-dot" />
         </div>
         <p className="nav-label">WORKSPACE</p>
-        <nav aria-label="Main navigation">
-          <Link href="/dashboard" className="nav-link">
-            <Icon name="grid" />
-            <span>Product catalog</span>
-            <span className="nav-indicator" />
-          </Link>
-        </nav>
+        <Suspense fallback={<WorkspaceLinks />}>
+          <WorkspaceNavigation />
+        </Suspense>
         <div className="sidebar-footer">
           <span className="small-leaf">✳</span>
           <p>
@@ -66,7 +63,7 @@ export function CatalogShell({ children }: { children: ReactNode }) {
       <div className="app-content">
         <header className="topbar">
           <span className="breadcrumb">
-            Workspace <span>/</span> <strong>Products</strong>
+            Workspace <span>/</span> <strong>Catalog management</strong>
           </span>
           <Suspense fallback={<span className="avatar">R</span>}>
             <Account />

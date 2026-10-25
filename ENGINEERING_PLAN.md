@@ -51,3 +51,7 @@ All five parts are implemented. Review the following focused commits in order:
 Final verification: 40 API tests / 376 assertions, 88.8% line coverage, PHPStan and Pint pass; web lint/types, 12 unit tests, integration scenario, and production build pass. Docker services are healthy. Browser review also caught and fixed a delete-dialog state issue during Back/Forward navigation; it has its own follow-up fix commit.
 
 The existing ordering index was retained after measurement; no duplicate index or schema migration was needed. Full-text search and responsive image derivatives remain future work subject to representative measurements, documented in the API performance report. Production deployment and load testing are outside this local verification.
+
+## Category management follow-up
+
+The added category scope includes authenticated API CRUD through CategoryService and CategoryRepository, unique trimmed names, product counts, rename preservation, and deletion protection using transactions, row locks, and the foreign key. The web Categories page provides search, create/edit dialogs, protected deletion, product links, accessible feedback, and refreshed category options across catalog/product views. Scribe and both READMEs describe the contracts. Verification: 52 API tests / 468 assertions / 90.4% coverage; web lint/types, 12 unit tests, two integration scenarios, and production build pass.

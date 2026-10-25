@@ -1,5 +1,6 @@
 export type User = { id: number; name: string; email: string };
 export type Category = { id: number; name: string };
+export type ManagedCategory = Category & { products_count: number };
 export type Product = {
   id: number;
   name: string;

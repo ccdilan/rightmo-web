@@ -230,8 +230,9 @@ export function ProductForm({
       />
       {!categories.length ? (
         <p className="notice" role="status">
-          No categories are available yet. Please try again once a category has
-          been added.
+          No categories are available yet.{" "}
+          <Link href="/categories">Add a category</Link> before creating a
+          product.
         </p>
       ) : null}
       <div className="form-actions">

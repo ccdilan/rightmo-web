@@ -22,6 +22,8 @@ test("return URLs only allow local catalog routes", () => {
     assert.equal(safeReturnTo(value), "/dashboard");
   assert.equal(safeReturnTo("/products/12"), "/products/12");
   assert.equal(safeReturnTo("/products/new"), "/products/new");
+  assert.equal(safeReturnTo("/categories"), "/categories");
+  assert.equal(safeReturnTo("/categories/unknown"), "/dashboard");
   assert.equal(safeReturnTo("/products/12/edit"), "/products/12/edit");
   assert.equal(
     safeReturnTo("/dashboard?search=lamp&page=2"),
